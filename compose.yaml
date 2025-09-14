@@ -2,7 +2,7 @@ services:
   tailscale:
     image: tailscale/tailscale
     container_name: tailscale-gatus
-    hostname: gatus
+    hostname: ${SERVICE_NAME}
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_STATE_DIR=/var/lib/tailscale
