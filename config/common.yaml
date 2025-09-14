@@ -1,0 +1,7 @@
+storage:
+  type: sqlite
+  path: /data/gatus.db
+
+ui:
+  title: Health Dashboard ǀ Homelab
+  default-sort-by: group

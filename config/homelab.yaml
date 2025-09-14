@@ -1,0 +1,80 @@
+alerting:
+  discord:
+    webhook-url: ${DISCORD_WEBHOOK_URL}
+    default-alert:
+      description: "health check failed"
+      send-on-resolved: true
+      failure-threshold: 2
+      success-threshold: 2
+
+endpoints:
+  - name: Grafana
+    group: Homelab Kubernetes
+    url: https://grafana.chik4ge.me/api/health
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].database == ok"
+    alerts:
+      - type: discord
+
+  - name: Argo CD
+    group: Homelab Kubernetes
+    url: https://argocd.chik4ge.me/healthz
+    headers:
+      CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
+      CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == ok"
+    alerts:
+      - type: discord
+
+  - name: Proxmox VE
+    group: Homelab Infrastructure
+    url: https://proxmox.chik4ge.me/api2/json/nodes
+    headers:
+      Authorization: PVEAPIToken=${PVE_API_TOKEN}
+      CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
+      CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
+    conditions:
+      - "[STATUS] == 200"
+      - "len([BODY].data) == 4"
+      - "[BODY].data[0].status == online"
+      - "[BODY].data[1].status == online"
+      - "[BODY].data[2].status == online"
+      - "[BODY].data[3].status == online"
+
+  - name: Minio
+    group: Homelab Kubernetes
+    url: https://minio.chik4ge.me/minio/health/live
+    # headers:
+    #   CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
+    #   CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: discord
+
+  - name: Alloy
+    group: Homelab Kubernetes
+    url: https://alloy.chik4ge.me/-/healthy
+    headers:
+      CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
+      CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == All Alloy components are healthy."
+    alerts:
+      - type: discord
+
+  - name: Mimir
+    group: Homelab Kubernetes
+    url: https://mimir.chik4ge.me/ready
+    headers:
+      CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
+      CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == ready"
+    alerts:
+      - type: discord

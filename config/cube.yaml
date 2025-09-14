@@ -1,0 +1,52 @@
+alerting:
+  discord-cube:
+    webhook-url: ${DISCORD_WEBHOOK_URL}
+    default-alert:
+      description: "health check failed"
+      send-on-resolved: true
+      failure-threshold: 2
+      success-threshold: 2
+
+# Common configuration templates
+x-minecraft-server-template: &minecraft-server
+  group: Minecraft CUBE
+  conditions:
+    - "[STATUS] == 200"
+    - "[BODY].online == true"
+    - "[BODY].players.max == 20"
+  ui:
+    hide-hostname: true
+    hide-url: true
+  alerts:
+    - type: discord-cube
+
+x-webmap-template: &webmap
+  group: Minecraft CUBE
+  conditions:
+    - "[STATUS] == 200"
+  ui:
+    hide-hostname: true
+    hide-url: true
+  alerts:
+    - type: discord
+
+endpoints:
+  - name: cocricot
+    url: https://api.mcstatus.io/v2/status/java/${CUBE_COCRICOT_ADDRESS}
+    <<: *minecraft-server
+
+  - name: cocricot WebMap
+    url: ${CUBE_COCRICOT_MAP_URL}
+    <<: *webmap
+
+  - name: MiniaTuria
+    url: https://api.mcstatus.io/v2/status/java/${CUBE_MINIATURIA_ADDRESS}
+    <<: *minecraft-server
+
+  - name: MiniaTuria WebMap
+    url: ${CUBE_MINIATURIA_MAP_URL}
+    <<: *webmap
+
+  - name: vanilla
+    url: https://api.mcstatus.io/v2/status/java/${CUBE_VANILLA_ADDRESS}
+    <<: *minecraft-server
