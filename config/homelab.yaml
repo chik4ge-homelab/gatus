@@ -43,7 +43,7 @@ endpoints:
 
   - name: Minio
     group: Homelab Kubernetes
-    url: https://minio.chik4ge.me/minio/health/live
+    url: https://minio-console.chik4ge.me/minio/health/live
     # headers:
     #   CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
     #   CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
