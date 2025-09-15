@@ -20,9 +20,6 @@ endpoints:
   - name: Argo CD
     group: Homelab Kubernetes
     url: https://argocd.chik4ge.me/healthz
-    headers:
-      CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
-      CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == ok"
@@ -58,9 +55,6 @@ endpoints:
   - name: Alloy
     group: Homelab Kubernetes
     url: https://alloy.chik4ge.me/-/healthy
-    headers:
-      CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
-      CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == All Alloy components are healthy."
@@ -70,11 +64,8 @@ endpoints:
   - name: Mimir
     group: Homelab Kubernetes
     url: https://mimir.chik4ge.me/ready
-    headers:
-      CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
-      CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
     conditions:
       - "[STATUS] == 200"
-      - "[BODY] == ready"
+      - "[BODY] == OK"
     alerts:
       - type: discord
