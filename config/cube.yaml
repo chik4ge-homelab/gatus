@@ -2,7 +2,7 @@ alerting:
   discord-cube:
     webhook-url: ${DISCORD_WEBHOOK_URL}
     default-alert:
-      description: "health check failed"
+      description: "(${SERVICE_NAME}) Please check ${SERVICE_URL} for more details."
       send-on-resolved: true
       failure-threshold: 2
       success-threshold: 2

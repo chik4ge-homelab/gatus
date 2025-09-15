@@ -2,7 +2,7 @@ alerting:
   discord:
     webhook-url: ${DISCORD_WEBHOOK_URL}
     default-alert:
-      description: "(${SERVICE_NAME}) health check failed. Please check ${SERVICE_URL} for more details."
+      description: "(${SERVICE_NAME}) Please check ${SERVICE_URL} for more details."
       send-on-resolved: true
       failure-threshold: 2
       success-threshold: 2
