@@ -28,7 +28,7 @@ x-webmap-template: &webmap
     hide-hostname: true
     hide-url: true
   alerts:
-    - type: discord
+    - type: discord-cube
 
 endpoints:
   - name: cocricot
