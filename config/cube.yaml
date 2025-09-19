@@ -1,11 +1,5 @@
-alerting:
-  discord-cube:
-    webhook-url: ${CUBE_DISCORD_WEBHOOK_URL}
-    default-alert:
-      description: "(${SERVICE_NAME}) Please check ${SERVICE_URL} for more details."
-      send-on-resolved: true
-      failure-threshold: 2
-      success-threshold: 2
+x-discord-alert-cube: &discord-cube
+  webhook-url: ${DISCORD_CUBE_WEBHOOK_URL}
 
 # Common configuration templates
 x-minecraft-server-template: &minecraft-server
@@ -18,7 +12,8 @@ x-minecraft-server-template: &minecraft-server
     hide-hostname: true
     hide-url: true
   alerts:
-    - type: discord-cube
+    - type: discord
+      discord: *discord-cube
 
 x-webmap-template: &webmap
   group: Minecraft CUBE
@@ -28,7 +23,8 @@ x-webmap-template: &webmap
     hide-hostname: true
     hide-url: true
   alerts:
-    - type: discord-cube
+    - type: discord
+      discord: *discord-cube
 
 endpoints:
   - name: cocricot
