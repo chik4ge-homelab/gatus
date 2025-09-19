@@ -1,5 +1,11 @@
-x-discord-alert-cube: &discord-cube
-  webhook-url: ${DISCORD_CUBE_WEBHOOK_URL}
+x-cube-template: &cube
+  ui:
+    hide-hostname: true
+    hide-url: true
+  alerts:
+    - type: discord
+      provider-override:
+        webhook-url: ${CUBE_DISCORD_WEBHOOK_URL}
 
 # Common configuration templates
 x-minecraft-server-template: &minecraft-server
@@ -8,23 +14,13 @@ x-minecraft-server-template: &minecraft-server
     - "[STATUS] == 200"
     - "[BODY].online == true"
     - "[BODY].players.max == 20"
-  ui:
-    hide-hostname: true
-    hide-url: true
-  alerts:
-    - type: discord
-      discord: *discord-cube
+  <<: *cube
 
 x-webmap-template: &webmap
   group: Minecraft CUBE
   conditions:
     - "[STATUS] == 200"
-  ui:
-    hide-hostname: true
-    hide-url: true
-  alerts:
-    - type: discord
-      discord: *discord-cube
+  <<: *cube
 
 endpoints:
   - name: cocricot
