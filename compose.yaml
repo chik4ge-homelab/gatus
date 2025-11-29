@@ -8,6 +8,8 @@ services:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
       - TS_EXTRA_ARGS=--advertise-tags=${TS_TAG}
+      - TS_DEBUG_MTU=1200
+      - TS_DEBUG_ENABLE_PMTUD=1
       - TS_ENABLE_HEALTH_CHECK=true
       - TS_LOCAL_ADDR_PORT=127.0.0.1:41234
     volumes:
@@ -25,6 +27,14 @@ services:
       start_period: 10s
     restart: always
 
+  mcstatus-api:
+    build:
+      context: ./mcstatus-api
+    container_name: mcstatus-api
+    expose:
+      - "8080"
+    restart: unless-stopped
+
   gatus:
     image: twinproduction/gatus
     container_name: gatus
@@ -32,6 +42,8 @@ services:
     depends_on:
       tailscale:
         condition: service_healthy
+    expose:
+      - "8080"
     volumes:
       - ./config:/config
       - ./data:/data

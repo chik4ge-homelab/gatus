@@ -1,4 +1,7 @@
 data/
 tailscale/
 
+# Python local artifacts
+mcstatus-api/__pycache__/
+
 .env
