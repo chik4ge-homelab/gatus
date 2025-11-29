@@ -31,8 +31,6 @@ services:
     build:
       context: ./mcstatus-api
     container_name: mcstatus-api
-    expose:
-      - "8080"
     restart: unless-stopped
 
   gatus:
@@ -42,8 +40,6 @@ services:
     depends_on:
       tailscale:
         condition: service_healthy
-    expose:
-      - "8080"
     volumes:
       - ./config:/config
       - ./data:/data
