@@ -8,13 +8,17 @@ app = FastAPI(title="Minecraft Status API")
 @app.get("/java/status")
 async def java_status(
     host: str = Query(..., description="Minecraft Java server hostname or IP"),
-    port: int = Query(25565, description="Minecraft Java server port"),
+    port: int | None = Query(
+        None,
+        description=(
+            "Minecraft Java server port. 省略すると SRV レコードを解決して接続します"
+        ),
+    ),
 ):
-    """
-    Java版のサーバーに対して、いわゆる「ping」(status) を実行して返します。
-    """
     try:
-        server = JavaServer.lookup(f"{host}:{port}")
+        # port を指定すると SRV レコード解決が無効化されるため、未指定なら SRV を利用
+        target = host if port is None else f"{host}:{port}"
+        server = JavaServer.lookup(target)
         status = server.status()
 
         # 必要そうな情報だけ抜粋。生データが欲しければ status.raw などを返してもよい
@@ -29,7 +33,7 @@ async def java_status(
         data = {
             "online": True,
             "host": host,
-            "port": port,
+            "port": server.server_address[1] if hasattr(server, "server_address") else port,
             "version": version,
             "latency_ms": status.latency,
             "players": {
