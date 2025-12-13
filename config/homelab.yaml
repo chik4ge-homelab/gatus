@@ -28,7 +28,7 @@ endpoints:
 
   - name: Proxmox VE
     group: Homelab Infrastructure
-    url: https://proxmox.chik4ge.me/api2/json/nodes
+    url: https://pve.chik4ge.me/api2/json/nodes
     headers:
       Authorization: PVEAPIToken=${PVE_API_TOKEN}
       CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}
