@@ -1,6 +1,6 @@
 services:
   tailscale:
-    image: tailscale/tailscale
+    image: tailscale/tailscale:stable
     container_name: tailscale-gatus
     hostname: ${SERVICE_NAME}
     environment:
