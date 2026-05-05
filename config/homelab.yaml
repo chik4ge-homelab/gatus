@@ -60,3 +60,55 @@ endpoints:
       - "[BODY] == OK"
     alerts:
       - type: discord
+
+  - name: Immich
+    group: Homelab Applications
+    url: https://immich.chik4ge.me
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: discord
+
+  - name: Home Assistant
+    group: Homelab Applications
+    url: https://home.chik4ge.me
+    conditions:
+      - "[STATUS] == 302"
+    alerts:
+      - type: discord
+
+  - name: UniFi
+    group: Homelab Applications
+    url: https://unifi.chik4ge.me
+    conditions:
+      - "[STATUS] == 302"
+    alerts:
+      - type: discord
+
+  - name: 1Password Connect
+    group: Homelab Applications
+    url: https://connect.chik4ge.me/health
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].dependencies[0].status == ACTIVE"
+      - "[BODY].dependencies[1].status == AVAILABLE"
+      - "[BODY].dependencies[2].status == ACTIVE"
+      - "[BODY].dependencies[3].status == ACTIVE"
+    alerts:
+      - type: discord
+
+  - name: Ceph Dashboard
+    group: Homelab Infrastructure
+    url: https://ceph.chik4ge.me
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: discord
+
+  - name: Ceph Object Gateway
+    group: Homelab Infrastructure
+    url: https://rgw.chik4ge.me
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: discord
