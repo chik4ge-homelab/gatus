@@ -73,7 +73,7 @@ endpoints:
     group: Homelab Applications
     url: https://home.chik4ge.me
     conditions:
-      - "[STATUS] == 302"
+      - "[STATUS] == 200"
     alerts:
       - type: discord
 
@@ -81,7 +81,7 @@ endpoints:
     group: Homelab Applications
     url: https://unifi.chik4ge.me
     conditions:
-      - "[STATUS] == 302"
+      - "[STATUS] == 200"
     alerts:
       - type: discord
 
