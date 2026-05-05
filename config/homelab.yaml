@@ -43,14 +43,6 @@ endpoints:
     alerts:
       - type: discord
 
-  - name: Minio
-    group: Homelab Kubernetes
-    url: https://minio.chik4ge.me/minio/health/cluster
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
-      - type: discord
-
   - name: Alloy
     group: Homelab Kubernetes
     url: https://alloy.chik4ge.me/-/healthy
