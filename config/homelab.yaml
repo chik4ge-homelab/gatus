@@ -40,6 +40,8 @@ endpoints:
       - "[BODY].data[1].status == online"
       - "[BODY].data[2].status == online"
       - "[BODY].data[3].status == online"
+    alerts:
+      - type: discord
 
   - name: Minio
     group: Homelab Kubernetes
