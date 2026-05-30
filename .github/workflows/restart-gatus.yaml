@@ -28,5 +28,7 @@ jobs:
         run: |
           set -eu
 
-          tailscale ssh "$DEPLOY_USER@$DEPLOY_HOST" \
+          deploy_ip="$(tailscale ip -4 "$DEPLOY_HOST")"
+
+          tailscale ssh "$DEPLOY_USER@$deploy_ip" \
             'cd ~/gatus && git pull --ff-only && docker compose restart gatus'
