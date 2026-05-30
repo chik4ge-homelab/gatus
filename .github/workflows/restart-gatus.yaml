@@ -1,0 +1,32 @@
+name: Restart Gatus
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: restart-gatus
+  cancel-in-progress: true
+
+jobs:
+  restart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          ping: ${{ secrets.DEPLOY_HOST }}
+
+      - name: Restart service
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -eu
+
+          tailscale ssh "$DEPLOY_USER@$DEPLOY_HOST" \
+            'cd ~/gatus && git pull --ff-only && docker compose restart gatus'
