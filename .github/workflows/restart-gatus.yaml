@@ -28,7 +28,10 @@ jobs:
         run: |
           set -eu
 
-          deploy_ip="$(tailscale ip -4 "$DEPLOY_HOST")"
+          deploy_ip="$(
+            tailscale status --json |
+              jq -r --arg host "${DEPLOY_HOST%.}." '.Peer[] | select(.DNSName == $host) | .TailscaleIPs[0]'
+          )"
 
           tailscale ssh "$DEPLOY_USER@$deploy_ip" \
             'cd ~/gatus && git pull --ff-only && docker compose restart gatus'
