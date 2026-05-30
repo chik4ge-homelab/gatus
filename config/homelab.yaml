@@ -35,7 +35,7 @@ endpoints:
       CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}
     conditions:
       - "[STATUS] == 200"
-      - "len([BODY].data) == 4"
+      - "len([BODY].data) == 5"
       - "[BODY].data[0].status == online"
       - "[BODY].data[1].status == online"
       - "[BODY].data[2].status == online"
