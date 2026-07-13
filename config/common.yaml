@@ -8,6 +8,6 @@ ui:
 
 maintenance:
   start: "19:26"
-  duration: 168h
+  duration: 24h
   timezone: "Asia/Tokyo"
-  every: [Monday]
+  every: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]

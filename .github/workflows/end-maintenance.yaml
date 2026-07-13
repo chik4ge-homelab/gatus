@@ -1,0 +1,63 @@
+name: End Gatus Maintenance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 10 20 7 *"
+
+permissions:
+  contents: write
+
+jobs:
+  end-maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Remove maintenance configuration
+        run: |
+          set -eu
+
+          now="$(date -u +%s)"
+          end="$(date -u -d '2026-07-20T10:26:00Z' +%s)"
+          if [ "$now" -lt "$end" ]; then
+            echo "Maintenance window has not ended yet."
+            exit 0
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("config/common.yaml")
+          lines = path.read_text().splitlines()
+          out = []
+          i = 0
+          while i < len(lines):
+              if lines[i] == "maintenance:":
+                  i += 1
+                  while i < len(lines) and (lines[i].startswith("  ") or lines[i] == ""):
+                      i += 1
+                  if out and out[-1] == "":
+                      out.pop()
+                  continue
+              out.append(lines[i])
+              i += 1
+          path.write_text("\n".join(out).rstrip() + "\n")
+          Path(".github/workflows/end-maintenance.yaml").unlink()
+          PY
+
+      - name: Commit maintenance removal
+        run: |
+          set -eu
+
+          if git diff --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/common.yaml .github/workflows/end-maintenance.yaml
+          git commit -m "End Gatus maintenance mode"
+          git push

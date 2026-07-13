@@ -14,6 +14,44 @@ jobs:
   restart:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Gatus config
+        run: |
+          set -eu
+
+          env_file="$(mktemp)"
+          data_dir="$(mktemp -d)"
+          grep -rho '\${[A-Za-z_][A-Za-z0-9_]*}' config |
+            sed 's/[${}]//g' |
+            sort -u |
+            while read -r name; do
+              printf '%s=https://example.com\n' "$name" >> "$env_file"
+            done
+
+          set +e
+          timeout 10s docker run --rm \
+            -v "$PWD/config:/config:ro" \
+            -v "$data_dir:/data" \
+            -e GATUS_CONFIG_PATH=/config \
+            --env-file "$env_file" \
+            twinproduction/gatus > gatus-validate.log 2>&1
+          rc="$?"
+          set -e
+
+          cat gatus-validate.log
+
+          if grep -Eiq 'panic|error parsing config|yaml: unmarshal' gatus-validate.log; then
+            exit 1
+          fi
+
+          if [ "$rc" -eq 124 ] && grep -q 'Listening on' gatus-validate.log; then
+            exit 0
+          fi
+
+          exit "$rc"
+
       - name: Connect to Tailscale
         uses: tailscale/github-action@v4
         with:
