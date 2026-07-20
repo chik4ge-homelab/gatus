@@ -5,9 +5,3 @@ storage:
 ui:
   title: Health Dashboard ǀ Homelab
   default-sort-by: group
-
-maintenance:
-  start: "19:26"
-  duration: 24h
-  timezone: "Asia/Tokyo"
-  every: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
