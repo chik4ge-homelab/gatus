@@ -72,4 +72,4 @@ jobs:
           )"
 
           tailscale ssh "$DEPLOY_USER@$deploy_ip" \
-            'cd ~/gatus && git pull --ff-only && docker compose restart gatus'
+            'cd ~/gatus && git pull --ff-only && docker compose up -d --no-deps --force-recreate gatus'

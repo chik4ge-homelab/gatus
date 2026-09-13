@@ -8,6 +8,13 @@ alerting:
       success-threshold: 2
 
 endpoints:
+  - name: Gatus watchdog
+    group: monitoring
+    url: ${HEALTHCHECKS_PING_URL}
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+
   - name: Grafana
     group: Homelab Kubernetes
     url: https://grafana.chik4ge.me/api/health
